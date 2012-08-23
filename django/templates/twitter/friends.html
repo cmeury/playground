@@ -1,0 +1,8 @@
+<ul>
+{% for friend in friends%}
+    <p>
+    <strong>@{{ friend.screen_name }}</strong> - id: {{ friend.id }} - follows: {{ friend.friends_count }} - followed by: {{ friend.followers_count }}
+
+    </p>
+{% endfor %}
+</ul>

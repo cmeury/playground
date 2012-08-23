@@ -1,0 +1,6 @@
+<strong>{{ tweet_id }}</strong>
+<ul>
+    {% for status in statuses %}
+    <li>@{{ status.user.screen_name }} - {{ status.text }}</li>
+    {% endfor %}
+</ul>
