@@ -4,8 +4,21 @@
 # Packages
 *.egg
 *.egg-info
+
 .idea
 *.iml
+
+.classpath
+.project
+.settings
+
+.gwt
+
+.svn
+
+secret.py
+
+
 dist
 build
 eggs
