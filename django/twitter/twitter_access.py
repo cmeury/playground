@@ -11,14 +11,14 @@ class twitter_access(object):
 
         # The consumer keys can be found on your application's Details
         # page located at https://dev.twitter.com/apps (under "OAuth settings")
-        consumer_key="QDxWKKQDIltdVMYyMufgSg"
-        consumer_secret="Ec2SkfxRN2pcjC1nensCen9HRjikoCuQTOOMV0bUY"
+        consumer_key=""
+        consumer_secret=""
 
         # The access tokens can be found on your applications's Details
         # page located at https://dev.twitter.com/apps (located
         # under "Your access token")
-        access_token="35724043-Kcx9g2buXouOUFCTX7LrzQBl9erfkQHpMBNinW02s "
-        access_token_secret="l7l8ZycOjsRdHa2mw3Anzszje4jXKwT0Gq1tmDmajOA"
+        access_token=""
+        access_token_secret=""
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
