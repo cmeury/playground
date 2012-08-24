@@ -6,15 +6,14 @@ import twitter
 from twitter.oauth import write_token_file, read_token_file
 from twitter.oauth_dance import oauth_dance
 
+# import keys from file which is excluded from git via .gitignore
+from secret import *
 
 def login():
 
-    # Go to http://twitter.com/apps/new to create an app and get these items
-    # See also http://dev.twitter.com/pages/oauth_single_token
-
-    APP_NAME = ''
-    CONSUMER_KEY = ''
-    CONSUMER_SECRET = ''
+    APP_NAME = 'Learning Python - Mining'
+    CONSUMER_KEY = consumer_key
+    CONSUMER_SECRET = consumer_secret
     TOKEN_FILE = 'out/twitter.oauth'
 
     try:
