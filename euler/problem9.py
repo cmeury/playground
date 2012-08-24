@@ -4,8 +4,6 @@
 #There exists exactly one Pythagorean triplet for which a + b + c = 1000.
 #Find the product abc.
 
-# idea: for c^2, use (1000-a-b)^2
-# on paper, one finds: (10^6-2000a)/(2000-2a) = b
-# finding only two numbers that fit this equation is easier than finding three
-
-
+# Idea: a^2 + b^2 = c^2 describes a triangle with a right angle between a and b
+# So, we can apply the rules:
+# cos alpha = a/b 
