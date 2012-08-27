@@ -1,9 +1,5 @@
 # In the 20x20 grid in the file problem11.txt, four numbers along a diagonal line have been marked in red.
 # What is the greatest product of four adjacent numbers in any direction (up, down, left, right, or diagonally) in the 2020 grid?
-import networkx as nx
-
-def hashify(x, y):
-    return str(x) + '-' + str(y) + ':' +  str(grid[y][x])
 
 def read_file(filename):
     f = open(filename, 'r')
@@ -14,29 +10,23 @@ def read_file(filename):
 
 grid = read_file('problem11.txt')
 
-min=0
-max=19
+minimum=0
+maximum=20
+step=4
+max_product=0
 
-g = nx.Graph()
+for y in range(minimum, maximum):
+    for x in range(minimum, maximum):
+        if x < maximum-step+1:
+            hori = grid[y][x] * grid[y][x+1] * grid[y][x+2] * grid[y][x+3]
+            if y < maximum-step+1:
+                diago1 = grid[y][x] * grid[y+1][x+1] * grid[y+2][x+2] * grid[y+3][x+3]
+                diago2 = grid[y+3][x] * grid[y+2][x+1] * grid[y+1][x+2] * grid[y][x+3]
+        if y < maximum-step+1:
+            verti = grid[y][x] * grid[y+1][x] * grid[y+2][x] * grid[y+3][x]
 
-# constructing the graph from the grid
-for x in range(min, max):
-    for y in range(min, max):
-        g.add_node(hashify(x,y), value = grid[y][x])
-        if x != max: # horizontal
-            g.add_edge(hashify(x,y), hashify(x+1,y))
-        if y != max: # vertical
-            g.add_edge(hashify(x,y), hashify(x,y+1))
-            if x != 0: # diagonal right
-                g.add_edge(hashify(x,y), hashify(x-1,y+1))
-            if x != max: # diagonal left
-                g.add_edge(hashify(x,y), hashify(x+1,y+1))
+        local_max_product = max(hori,verti,diago1,diago2)
+        if local_max_product > max_product:
+            max_product = local_max_product
 
-#for node in g.nodes_iter(data=True):
-#    tree = nx.dfs_tree(g, node)
-
-for a,b in g.nodes(data=True):
-    print b['value']
-    for c, d in nx.neighbors(g, a):
-        print d['value']
-
+print max_product
