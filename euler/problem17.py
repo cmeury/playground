@@ -1,12 +1,13 @@
 import math
 import re
+import string
 
 class Wordify:
 
     def __init__(self):
         self.singles = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-        self.teens = ['eleven', 'twelve', 'thirteen', 'fourteen','fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
-        self.tens = ['', 'twenty', 'thirty', 'fourty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+        self.teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen','fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+        self.tens = ['', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
         self.hundreds = ['']
 
     def transform(self, number):
@@ -15,11 +16,14 @@ class Wordify:
         elif number < 10:
             return self.singles[number-1]
         elif number < 20:
-            return self.teens[number-1]
+            return self.teens[number-10]
         elif number < 100:
             ten = math.trunc(number / 10)
             single = number - (ten * 10)
-            return self.tens[ten-1] + '-' + self.transform(single)
+            if single > 0:
+                return self.tens[ten-1] + '-' + self.transform(single)
+            else:
+                return self.tens[ten-1]
         elif number <  1000:
             hundred = math.trunc(number / 100)
             rest = number - (hundred * 100)
@@ -34,7 +38,17 @@ class Wordify:
 
 
     def count_letters(self, number):
-        string = self.transform(number)
+        words = self.transform(number)
         alpha = re.compile(r"[a-zA-Z]")
-        for c in string:
-            if alpha.§
+        i = 0
+        for c in words:
+            if c in string.letters:
+                i += 1
+        return i
+
+if __name__ == "__main__":
+    w = Wordify()
+    count = 0
+    for n in range(1,1001):
+        count += w.count_letters(n)
+    print count

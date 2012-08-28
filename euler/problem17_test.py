@@ -30,4 +30,14 @@ class WordifyTest(unittest.TestCase):
 
     def test_thousands(self):
         self.assertEqual("one thousand", self.wordify.transform(1000), )
-        self.assertRaises(NotImplementedError, self.wordify.transform(1001))
+        try:
+            self.wordify.transform(1001)
+            self.fail
+        except NotImplementedError:
+            pass
+
+    def test_count(self):
+        self.assertEqual(5, self.wordify.count_letters(3))
+        self.assertEqual(24, self.wordify.count_letters(999))
+        self.assertEqual(23, self.wordify.count_letters(342))
+        self.assertEqual(20, self.wordify.count_letters(115))
