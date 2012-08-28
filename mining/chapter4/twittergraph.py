@@ -1,38 +1,54 @@
 import twitter
 import json
 import sys
+import locale
+import functools
+import redis
 import cPickle
 from twitter__login import login
-from twitter__util import makeTwitterRequest
+from twitter__util import _getFriendsOrFollowersUsingFunc
+from twitter__util import getRedisIdByScreenName
 
-t = login()
-
-def getFriendIds(screen_name=None, user_id=None, friends_limit=5000):
-	assert screen_name is not None or user_id is not None
-
-	ids = []
-	cursor = -1
-
-	while cursor != 0:
-		params = dict(cursor=cursor)
-		if screen_name is not None:
-			params['screen_name'] = screen_name
-		else:
-			params['user_id'] = user_id
-
-		response = makeTwitterRequest(t, t.friends.ids, **params)
-		ids.extend(response['ids'])
-		cursor = response['next_cursor']
-		print >> sys.stderr, 'Fetched %i ids for %s' % (len(ids), screen_name or user_id)
-		if len(ids) >= friends_limit:
-			break
-
-	return ids
 
 if __name__ == '__main__':
-	if len(sys.argv) != 2:
-		print 'usage: python twittergraph.py <SCREEN_NAME>'
-		sys.exit()
-	ids = getFriendIds(sys.argv[1], friends_limit=500)
-	print ids
+    if len(sys.argv) != 2:
+        print 'usage: python twittergraph.py <SCREEN_NAME>'
+        sys.exit()
+    SCREEN_NAME = sys.argv[1]
+    MAXINT = sys.maxint
+    locale.setlocale(locale.LC_ALL, '')
 
+    t = login()
+
+    r = redis.Redis()
+    getFriends = functools.partial(_getFriendsOrFollowersUsingFunc, t.friends.ids, 'friend_ids', t, r)
+    getFollowers = functools.partial(_getFriendsOrFollowersUsingFunc, t.followers.ids, 'follower_ids', t, r)
+    screen_name = SCREEN_NAME
+
+    # data retrieval
+    print >> sys.stderr, 'Getting friends for %s...' % (screen_name, )
+    getFriends(screen_name, limit=MAXINT)
+    print >> sys.stderr, 'Getting followers for %s...' % (screen_name, )
+    getFollowers(screen_name, limit=MAXINT)
+
+    # redis calculations
+    n_friends = r.scard(getRedisIdByScreenName(screen_name, 'friend_ids'))
+    n_followers = r.scard(getRedisIdByScreenName(screen_name, 'follower_ids'))
+
+    n_friends_diff_followers = r.sdiffstore('temp', [getRedisIdByScreenName(screen_name, 'friend_ids'),
+                                                     getRedisIdByScreenName(screen_name, 'follower_ids')])
+    r.delete('temp')
+    n_followers_diff_friends = r.sdiffstore('temp', [getRedisIdByScreenName(screen_name, 'follower_ids'),
+                                                     getRedisIdByScreenName(screen_name, 'friend_ids')])
+    r.delete('temp')
+    n_friends_inter_followers = r.sinterstore('temp', [getRedisIdByScreenName(screen_name, 'follower_ids'),
+                                                       getRedisIdByScreenName(screen_name, 'friend_ids')])
+    r.delete('temp')
+
+    print '%s is following %s' % (screen_name, locale.format('%d', n_friends, True))
+    print '%s is being followed by %s' % (screen_name, locale.format('%d', n_followers, True))
+    print '%s of %s are not following %s back' % (locale.format('%d', n_friends_diff_followers, True),
+        locale.format('%d', n_friends, True), screen_name)
+    print '%s of %s are not being followed back by %s' % (locale.format('%d', n_followers_diff_friends, True),
+        locale.format('%d', n_followers, True), screen_name)
+    print '%s has %s mutual friends' % (screen_name, locale.format('%d', n_friends_inter_followers, True))
