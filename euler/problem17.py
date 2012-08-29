@@ -8,7 +8,6 @@ class Wordify:
         self.singles = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
         self.teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen','fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
         self.tens = ['', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
-        self.hundreds = ['']
 
     def transform(self, number):
         if number == 0:
@@ -39,7 +38,6 @@ class Wordify:
 
     def count_letters(self, number):
         words = self.transform(number)
-        alpha = re.compile(r"[a-zA-Z]")
         i = 0
         for c in words:
             if c in string.letters:
