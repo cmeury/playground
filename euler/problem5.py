@@ -8,35 +8,6 @@ def check_divisible(x,n):
 			return False
 	return True
 
-def smallest_prime_factor(n):
-	i = 2
-	while i < n/2 + 1:
-		if n % i == 0:
-			return i
-		i += 1
-	return n
-
-
-
-def smallest_divisible(x):
-	if x < 3:
-		raise ValueError('must be greater than 2')
-	product = 1
-	factors = []
-	for j in range(2,x+1):
-		print "j: " +str(j)
-		print "x: " +str(x)
-		print "product: " + str(product)
-		f = smallest_prime_factor(j)
-		factors.append(f)
-		product *= f
-	div = product
-	for i in factors:
-		div /= i
-		print "check " + str(i) + " --> " + str(div) + " is " + str(check_divisible(div,x))
-	return product
-
-# ----
 def small_div(x):
     number = x
     while True:
@@ -45,6 +16,7 @@ def small_div(x):
         for i in range(1,x+1):
             if number % i != 0:
                 divisible = False
+                break
         if not divisible:
             continue
         else:
@@ -54,5 +26,4 @@ def small_div(x):
 maxVal = int(sys.argv[1])
 div = small_div(maxVal)
 print div
-
 print "check: " + str(check_divisible(maxVal,div))
