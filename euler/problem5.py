@@ -36,8 +36,23 @@ def smallest_divisible(x):
 		print "check " + str(i) + " --> " + str(div) + " is " + str(check_divisible(div,x))
 	return product
 
+# ----
+def small_div(x):
+    number = x
+    while True:
+        number += 1
+        divisible = True
+        for i in range(1,x+1):
+            if number % i != 0:
+                divisible = False
+        if not divisible:
+            continue
+        else:
+            break
+    return number
+
 maxVal = int(sys.argv[1])
-div = smallest_divisible(maxVal)
+div = small_div(maxVal)
 print div
 
 print "check: " + str(check_divisible(maxVal,div))
