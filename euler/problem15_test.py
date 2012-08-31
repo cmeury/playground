@@ -4,8 +4,8 @@ from problem15 import GridRoutes
 class GridRoutesTest(unittest.TestCase):
 
     def test_routes(self):
-        gridroutes = GridRoutes(2)
-        self.assertEqual(6, gridroutes.routes())
+        self.assertEqual(6, GridRoutes(3).routes())
+        self.assertEqual(2, GridRoutes(2).routes())
 
     def test_buildgrid(self):
         gridroutes = GridRoutes(3)

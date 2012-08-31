@@ -12,12 +12,11 @@ class GridRoutes:
 
     def routes(self):
         paths = networkx.all_simple_paths(self.grid, self.hashify(0,0), self.hashify(self.size-1,self.size-1))
-#        print list(paths)
         return len(list(paths))
 
     def buildGrid(self):
         """n: grid size"""
-        g = networkx.Graph()
+        g = networkx.DiGraph()
 
         # build nodes
         for y in range(0,self.size):
