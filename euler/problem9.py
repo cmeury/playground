@@ -1,9 +1,14 @@
-# A Pythagorean triplet is a set of three natural numbers, a  b  c, for which,
-# a^2 + b^2 = c^2
-#For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2.
-#There exists exactly one Pythagorean triplet for which a + b + c = 1000.
-#Find the product abc.
+import math
 
-# Idea: a^2 + b^2 = c^2 describes a triangle with a right angle between a and b
-# So, we can apply the rules:
-# cos alpha = a/b 
+def triplet(max):
+    c = 2
+    while not c >= max:
+        for a in range(1, c):
+            for b in range(a, c):
+                if math.pow(a, 2) + math.pow(b, 2) == math.pow(c, 2) and ( a + b + c ) == 1000:
+                    return a, b, c
+        c += 1
+    return -1
+
+results = triplet(math.pow(10,50))
+print results[0] * results[1] * results[2]
