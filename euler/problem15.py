@@ -1,11 +1,14 @@
 # Starting in the top left corner of a 2x2 grid, there are 6 routes (without backtracking) to the bottom right corner.
 # How many routes are there through a 20x20 grid?
+from time import time
 
 import networkx
 
 class GridRoutes:
 
     def __init__(self, n):
+        if n < 1:
+            raise ValueError
         self.size = n
         self.grid = self.buildGrid()
         self.counter = 0
@@ -35,5 +38,8 @@ class GridRoutes:
         return str(x) + ':' + str(y)
 
 if __name__ == '__main__':
-    gr = GridRoutes(20)
-    print gr.routes()
+    for i in range(1,11):
+        before = time()
+        gr = GridRoutes(i)
+        after = time()
+        print str(i) + 'x' + str(i) + ' -> ' + str(gr.routes()) + ', in ' + str(after-before) + ' seconds'
