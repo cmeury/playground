@@ -13,9 +13,21 @@ class GridRoutes:
         self.grid = self.buildGrid()
         self.counter = 0
 
-    def routes(self):
+    def routes_long(self):
         paths = networkx.all_simple_paths(self.grid, self.hashify(0,0), self.hashify(self.size-1,self.size-1))
         return len(list(paths))
+
+    def routes(self):
+        print "generating simple paths.."
+        paths = networkx.all_simple_paths(self.grid, self.hashify(0,0), self.hashify(self.size-1,self.size-1))
+
+        print "listing paths.."
+        count = 0
+        for p in paths:
+            count += 1
+            if count % 100000 == 0:
+                print count
+        return count
 
     def buildGrid(self):
         """n: grid size"""
@@ -38,8 +50,9 @@ class GridRoutes:
         return str(x) + ':' + str(y)
 
 if __name__ == '__main__':
-    for i in range(1,11):
-        before = time()
-        gr = GridRoutes(i)
-        after = time()
-        print str(i) + 'x' + str(i) + ' -> ' + str(gr.routes()) + ', in ' + str(after-before) + ' seconds'
+#    for i in range(1,15):
+#        before = time()
+#        gr = GridRoutes(i)
+#        after = time()
+#        print str(i) + 'x' + str(i) + ' -> ' + str(gr.routes()) + ', in ' + str(after-before) + ' seconds'
+    print GridRoutes(4).routes()
