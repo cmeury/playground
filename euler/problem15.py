@@ -1,7 +1,7 @@
 # Starting in the top left corner of a 2x2 grid, there are 6 routes (without backtracking) to the bottom right corner.
 # How many routes are there through a 20x20 grid?
+
 import networkx
-from networkx.classes.graph import Graph
 
 class GridRoutes:
 
@@ -35,5 +35,5 @@ class GridRoutes:
         return str(x) + ':' + str(y)
 
 if __name__ == '__main__':
-    gr = GridRoutes(3)
+    gr = GridRoutes(20)
     print gr.routes()
