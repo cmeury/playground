@@ -1,19 +1,19 @@
 public class problem10_java {
 
-	public int findSumOfPrimesBelow(int size) {
-		boolean[] numbers = new boolean[size + 1];
+	public long findSumOfPrimesBelow(int size) {
+		boolean[] numbers = new boolean[size];
 		for (int i = 0; i < numbers.length; i++) {
 			numbers[i] = true;
 		}
 		int p = 2;
-		int sum = 1; // 1 is a prime number
-		while (true) {
+		long sum = 0; // we don't count the 1 according to the problem description
+		boolean found = true;
+		while (found) {
 			sum += p;
-			System.out.println(p + " -> " + sum);
 			for(int i = p+p; i<size; i += p) {
 				numbers[i] = false;
 			}
-			boolean found = false;
+			found = false;
 			for(int i = p+1; i<size; i++) {
 				if(numbers[i] == true) {
 					p = i;
@@ -21,15 +21,12 @@ public class problem10_java {
 					break;
 				}
 			}
-			if(!found) {
-				break;
-			}
 		}
 		return sum;
 	}
 
 	public static void main(String[] args) {
 		problem10_java problem10java = new problem10_java();
-		System.out.println(problem10java.findSumOfPrimesBelow(30));
+		System.out.println(problem10java.findSumOfPrimesBelow(2000000));
 	}
 }
