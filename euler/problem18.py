@@ -63,7 +63,7 @@ class TriangleRoutes:
 
 
 if __name__ == '__main__':
-    triangleroutes = TriangleRoutes("problem18_small.txt")
+    triangleroutes = TriangleRoutes("problem18_large.txt")
     print triangleroutes.max_path()
 
 
