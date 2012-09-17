@@ -20,7 +20,10 @@ def prime_factors(n):
 def triangle(x):
     return (x * (x + 1)) / 2
 
-def factors(x):
+def divisor_function(x):
+    """
+    See https://en.wikipedia.org/wiki/Divisor_function
+    """
     pf = prime_factors(x)
     factor_counts = []
     added = []
@@ -39,6 +42,6 @@ i = 0
 while True:
     i += 1
     t = triangle(i)
-    if factors(t) > 500:
+    if divisor_function(t) > 500:
         print t
         break
