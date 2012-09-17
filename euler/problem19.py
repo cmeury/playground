@@ -44,12 +44,21 @@ def days_of_year(year):
 days = 0
 for i in range(1901,2000+1,1):
     days += days_of_year(i)
-print days / 7
 
 # 1 Jan 1900 = monday
 # want weekday?
 # input year, month, day
 
-def weekday(year, month, day):
-    start = 1900
-    days_of_year()
+rest = 0
+sundays_on_first = 0
+for y in range(1900,2000+1):
+    for m in range(1,12+1):
+        if rest == 0:
+            sundays_on_first += 1
+        days = days_of_month(m, y)
+        rest = (days + rest) % 7
+
+print sundays_on_first
+
+# 77 is wrong
+# 174 is wrong
