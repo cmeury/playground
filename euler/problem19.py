@@ -1,14 +1,5 @@
 # How many Sundays fell on the first of the month during the twentieth century (1 Jan 1901 to 31 Dec 2000)?
 
-# Hints:
-# 1 Jan 1900 was a Monday.
-# Thirty days has September, April, June and November.
-# All the rest have thirty-one,
-# Saving February alone,
-# Which has twenty-eight, rain or shine.
-# And on leap years, twenty-nine.
-# A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.
-
 def days_of_month(month, year):
     if month in (9,4,6,11):
         return 30
@@ -33,32 +24,19 @@ def leap(year):
     else:
         return False
 
-def days_of_year(year):
-    days = 0
-    for i in range(12):
-        days += days_of_month(i+1, year)
-    return days
-
-# 1 Jan 1901
-# 31 Dec 2000
-days = 0
-for i in range(1901,2000+1,1):
-    days += days_of_year(i)
-
-# 1 Jan 1900 = monday
-# want weekday?
-# input year, month, day
-
-rest = 0
+rest = 1 # because 1900-1-1 is a monday
 sundays_on_first = 0
 for y in range(1900,2000+1):
     for m in range(1,12+1):
         if rest == 0:
-            sundays_on_first += 1
+            if y != 1900:
+                sundays_on_first += 1
         days = days_of_month(m, y)
         rest = (days + rest) % 7
 
 print sundays_on_first
 
 # 77 is wrong
-# 174 is wrong
+# 174 is wrong (with 1901, verified with Excel)
+# 172 is wrong (without 1900)
+# 171 is correct (we are one off at the beginning, rest=1)
