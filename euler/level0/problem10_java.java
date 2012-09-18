@@ -1,3 +1,5 @@
+package level0;
+
 public class problem10_java {
 
 	public long findSumOfPrimesBelow(int size) {

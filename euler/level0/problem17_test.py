@@ -1,5 +1,5 @@
 import unittest
-from problem17 import Wordify
+from level0.problem17 import Wordify
 
 class WordifyTest(unittest.TestCase):
 
