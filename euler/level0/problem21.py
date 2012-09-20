@@ -1,9 +1,8 @@
 import math
 
 def sum_of_proper_divisors(x):
-    half = math.trunc(x / 2)
     divs = []
-    for i in xrange(half,0,-1):
+    for i in xrange(0,x+1,1):
         if x % i == 0:
             divs.append(i)
     return sum(divs)
