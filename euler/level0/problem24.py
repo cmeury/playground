@@ -15,6 +15,6 @@ def perms(start, current):
         new_current.append(i)
         perms(new_list, new_current)
 
-perms(range(3), [])
+perms(range(10), [])
 
-print sorted(results)
+print sorted(results)[1000000-1]
