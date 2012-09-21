@@ -1,6 +1,9 @@
 import sys
 import math
 
+class test:
+    pass
+
 def check_recurring(decimals):
     for i in range(0, len(decimals)):
         find = decimals[i+1:].find(decimals[i])
@@ -25,9 +28,10 @@ def check_recurring(decimals):
                     return decimals[i:find]
     # no recurring found
     return ""
+                                          #                        #
+check_recurring("3831417624521727969348659383141762452172796934865938314176245")
+sys.exit()
 
-#check_recurring("1428571")
-#sys.exit()
 def divide_one_by(divisor):
     if divisor < 2:
         raise ValueError("divisor must be greater than 1")
@@ -45,6 +49,7 @@ def divide_one_by(divisor):
         dividend = dividend % divisor
         if dividend == 0:
             break
+        print "checking for recurring in: " + decimals
         recurring = check_recurring(decimals)
         if len(recurring) > 0:
             return recurring
@@ -53,6 +58,7 @@ def divide_one_by(divisor):
 max_length = 0
 max_length_divisor = 1
 for i in range(2,1000):
+    print "dividing by one " + str(i)
     recurring = divide_one_by(i)
     if len(recurring) > 0:
         if len(recurring) > max_length:
