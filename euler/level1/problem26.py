@@ -1,71 +1,72 @@
-import sys
 import math
 
-class test:
-    pass
+class Recurring:
+    def check_recurring(self, decimals):
+        for i in range(0, len(decimals)):
+            find = decimals[i+1:].find(decimals[i])
+            shift = i + 1
+            while find > -1:
+                find += shift
+                if find == i + 1:
+                    return decimals[i]
+                else:
+                    idx = 1
+                    recurring = True
+                    for j in range(i+1,find):
+                        if find + idx > len(decimals)-1:
+                            return ""
+                        if decimals[find + idx] != decimals[j]:
+                            recurring = False
+                            break
+                        idx += 1
+                    if recurring == True:
+                        return decimals[i:find]
+                # next find?
+                find = decimals[find+1:].find(decimals[i])
+                shift += find+1
 
-def check_recurring(decimals):
-    for i in range(0, len(decimals)):
-        find = decimals[i+1:].find(decimals[i])
-#        print decimals[i+1:]
-#        print decimals[i]
-        if find > -1:
-            # add back the shifting we did before finding
-            find += i+1
-            if find == i + 1:
-                return decimals[i]
-            else:
-                idx = 1
-                recurring = True
-                for j in range(i+1,find):
-                    if find + idx > len(decimals)-1:
-                        return ""
-                    if decimals[find + idx] != decimals[j]:
-                        recurring = False
-                        break
-                    idx += 1
-                if recurring == True:
-                    return decimals[i:find]
-    # no recurring found
-    return ""
+        # no recurring found
+        return ""
                                           #                        #
-check_recurring("3831417624521727969348659383141762452172796934865938314176245")
-sys.exit()
 
-def divide_one_by(divisor):
-    if divisor < 2:
-        raise ValueError("divisor must be greater than 1")
-    dividend = 1
-    decimals = ""
+    def divide_one_by(self, divisor):
+        if divisor < 2:
+            raise ValueError("divisor must be greater than 1")
+        dividend = 1
+        decimals = ""
 
-    if dividend < divisor:
-        dividend *= 10
-
-    while True:
-        while dividend < divisor:
+        if dividend < divisor:
             dividend *= 10
-        num = math.floor(dividend / divisor)
-        decimals += str(int(num))
-        dividend = dividend % divisor
-        if dividend == 0:
-            break
-        print "checking for recurring in: " + decimals
-        recurring = check_recurring(decimals)
+
+        while True:
+            while dividend < divisor:
+                dividend *= 10
+            num = math.floor(dividend / divisor)
+            decimals += str(int(num))
+            dividend = dividend % divisor
+            if dividend == 0:
+                break
+            recurring = self.check_recurring(decimals)
+            if len(recurring) > 0:
+                return recurring
+            # irrational?
+            if len(decimals) > 100:
+                return ""
+
+        return ""
+
+if __name__ == '__main__':
+    rec = Recurring()
+    max_length = 0
+    max_length_divisor = 1
+    for i in range(2,1000):
+        recurring = rec.divide_one_by(i)
         if len(recurring) > 0:
-            return recurring
-    return ""
+            if len(recurring) > max_length:
+                max_length = len(recurring)
+                max_length_divisor = i
 
-max_length = 0
-max_length_divisor = 1
-for i in range(2,1000):
-    print "dividing by one " + str(i)
-    recurring = divide_one_by(i)
-    if len(recurring) > 0:
-        if len(recurring) > max_length:
-            max_length = len(recurring)
-            max_length_divisor = i
-
-print max_length
-print max_length_divisor
+    print max_length
+    print max_length_divisor
 
 
