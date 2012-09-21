@@ -49,8 +49,8 @@ class Recurring:
             recurring = self.check_recurring(decimals)
             if len(recurring) > 0:
                 return recurring
-            # irrational?
-            if len(decimals) > 100:
+            # stop at one point, might be irrational
+            if len(decimals) > 2000:
                 return ""
 
         return ""
@@ -70,4 +70,7 @@ if __name__ == '__main__':
     print max_length_divisor
 
 
-# incorrect : 214
+
+# incorrect : 214 (limit 50)
+# incorrect : 529 (limit 1000)
+# incorrect : 499 (limit 2000)
