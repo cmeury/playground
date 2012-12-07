@@ -1,6 +1,6 @@
-package ch.wurmlo.daaii.quiz;
+package ch.wurmlo.daai.quiz;
 
-import ch.wurmlo.daaii.util.TimedResult;
+import ch.wurmlo.daai.util.TimedResult;
 
 public class Main {
 

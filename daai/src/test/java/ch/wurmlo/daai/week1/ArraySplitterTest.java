@@ -1,4 +1,4 @@
-package ch.wurmlo.daaii.week1;
+package ch.wurmlo.daai.week1;
 
 import static org.junit.Assert.*;
 

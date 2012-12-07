@@ -1,4 +1,4 @@
-package ch.wurmlo.daaii.quiz;
+package ch.wurmlo.daai.quiz;
 
 public class BruteForceCounter implements Counter {
 

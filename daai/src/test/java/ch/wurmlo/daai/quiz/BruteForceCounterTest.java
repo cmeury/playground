@@ -1,4 +1,4 @@
-package ch.wurmlo.daaii.quiz;
+package ch.wurmlo.daai.quiz;
 
 import static org.junit.Assert.*;
 

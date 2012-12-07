@@ -1,4 +1,4 @@
-package ch.wurmlo.daaii.util;
+package ch.wurmlo.daai.util;
 
 import java.util.Date;
 

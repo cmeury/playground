@@ -1,6 +1,6 @@
-package ch.wurmlo.daaii.week1;
+package ch.wurmlo.daai.week1;
 
-import ch.wurmlo.daaii.util.TimedResult;
+import ch.wurmlo.daai.util.TimedResult;
 
 import com.google.common.base.Preconditions;
 

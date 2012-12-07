@@ -1,4 +1,4 @@
-package ch.wurmlo.daaii;
+package ch.wurmlo.daai.week2;
 
 public class LastElementChooser implements PivotChooser {
 

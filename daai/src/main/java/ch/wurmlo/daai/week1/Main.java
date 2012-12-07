@@ -1,9 +1,9 @@
-package ch.wurmlo.daaii.week1;
+package ch.wurmlo.daai.week1;
 
 import java.util.Arrays;
 import java.util.Random;
 
-import ch.wurmlo.daaii.util.TimedResult;
+import ch.wurmlo.daai.util.TimedResult;
 
 public class Main {
 	

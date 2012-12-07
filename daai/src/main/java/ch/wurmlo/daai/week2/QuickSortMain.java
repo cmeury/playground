@@ -1,11 +1,11 @@
-package ch.wurmlo.daaii;
+package ch.wurmlo.daai.week2;
 
 import java.util.Arrays;
 
 public class QuickSortMain {
 
 		public static void main(String[] args) {
-			int[] integers = ReadIntegerArrayFile.readIntegersFromFile("QuickSort.txt", 10000);
+			int[] integers =ReadIntegerArrayFile.readIntegersFromFile("QuickSort.txt", 10000);
 			
 			QuickSort sort = new QuickSort(new FirstElementChooser());
 			int count = sort.sort(Arrays.copyOf(integers, integers.length), 0, integers.length - 1);

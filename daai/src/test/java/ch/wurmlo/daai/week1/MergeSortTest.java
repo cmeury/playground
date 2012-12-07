@@ -1,11 +1,11 @@
-package ch.wurmlo.daaii.week1;
+package ch.wurmlo.daai.week1;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.wurmlo.daaii.util.TimedResult;
+import ch.wurmlo.daai.util.TimedResult;
 
 public class MergeSortTest {
 

@@ -1,4 +1,4 @@
-package ch.wurmlo.daaii;
+package ch.wurmlo.daai.week2;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ public class TimedResult<T> {
 	}
 	
 	/**
-	 * Can only be called after {@link TimedResult#storeResult(long[])} 
+	 * Can only be called after {@link TimedResult#storeResult(Object)}
 	 * has been called.
 	 * @return duration in milliseconds
 	 */
