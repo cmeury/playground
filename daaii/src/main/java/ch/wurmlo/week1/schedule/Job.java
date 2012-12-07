@@ -14,15 +14,8 @@ public class Job {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-
 	public int getLength() {
 		return length;
 	}
 
-	public void setLength(int length) {
-		this.length = length;
-	}
 }
