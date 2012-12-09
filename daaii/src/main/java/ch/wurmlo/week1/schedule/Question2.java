@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Question1 {
+public class Question2 {
 
 	public static void main(String[] args) {
 		try {
@@ -18,22 +18,15 @@ public class Question1 {
 			Collections.sort(jobs, new Comparator<Job>() {
 				@Override
 				public int compare(Job o1, Job o2) {
-					int score1 = o1.getWeight() - o1.getLength();
-					int score2 = o2.getWeight() - o2.getLength();
-					if(score1 < score2) {
+					double score1 = o1.getWeight() / o1.getLength() * 1.0;
+					double score2 = o2.getWeight() / o2.getLength() * 1.0;
+					if (score1 < score2) {
 						return -1;
-					} else if(score1 > score2) {
+					} else if (score1 > score2) {
 						return 1;
 					} else {
-						if(o1.getWeight() < o2.getWeight()) {
-							return -1;
-						} else if(o1.getWeight() > o2.getWeight()) {
-							return 1;
-						} else {
-							return 0;
-						}
+						return 0;
 					}
-
 				}
 			});
 
