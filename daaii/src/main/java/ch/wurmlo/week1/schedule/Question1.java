@@ -41,14 +41,14 @@ public class Question1 {
 			Collections.reverse(jobs);
 
 			// calculating the sum of weighted completion times
-			int completionTime = 0;
-			int sumOfWeightedCompletionTimes = 0;
+			long completionTime = 0;
+			long sumOfCompletionTimes = 0;
 			for (Job job : jobs) {
 				completionTime += job.getLength();
-				sumOfWeightedCompletionTimes += job.getWeight() * completionTime;
+				sumOfCompletionTimes += job.getWeight() * completionTime;
 			}
 
-			System.out.println("sumOfWeightedCompletionTimes = " + sumOfWeightedCompletionTimes);
+			System.out.println("sumOfCompletionTimes = " + sumOfCompletionTimes);
 
 		} catch (IOException e) {
 			System.err.println("Could not read file");
