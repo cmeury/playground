@@ -10,6 +10,7 @@ import ch.wurmlo.week1.mst.Edge;
 
 public class Question1 {
 
+	@SuppressWarnings("UnusedDeclaration")
 	private static Logger log = LoggerFactory.getLogger(Question1.class);
 
 	public static void main(String[] args) {
@@ -43,11 +44,10 @@ public class Question1 {
 		Set<Edge> T = new HashSet<Edge>();
 		UnionFind<Integer> unionFind = new UnionFind<Integer>(graph.vertexSet());
 
-		for (int i = 0; i < edgeList.size(); i++) {
-			Edge edge = edgeList.get(i);
+		for (Edge edge : edgeList) {
 			Integer source = graph.getEdgeSource(edge);
 			Integer target = graph.getEdgeTarget(edge);
-			if(false == unionFind.find(source).equals(unionFind.find(target))) {
+			if (!unionFind.find(source).equals(unionFind.find(target))) {
 				T.add(edge);
 				unionFind.union(source, target);
 			}
