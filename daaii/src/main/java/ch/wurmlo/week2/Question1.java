@@ -2,11 +2,10 @@ package ch.wurmlo.week2;
 
 import java.io.IOException;
 import java.util.*;
+import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.UndirectedGraph;
-import org.jgrapht.alg.util.UnionFind;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ch.wurmlo.week1.mst.Edge;
 
 public class Question1 {
 
@@ -14,26 +13,26 @@ public class Question1 {
 	private static Logger log = LoggerFactory.getLogger(Question1.class);
 
 	public static void main(String[] args) {
+
 		// translating file into list of jobs
-		EdgesFileReader reader = null;
+		DistancesReader reader = null;
 		try {
-			reader = new EdgesFileReader("clustering1_small.txt");
+			reader = new DistancesReader("clustering1.txt");
 		} catch (IOException e) {
 			System.err.println("Could not read file");
 			System.exit(1);
 		}
-
-		UndirectedGraph<Integer,Edge> graph = reader.getGraph();
+		UndirectedGraph<Point,Distance> graph = reader.getGraph();
 
 		// sort edges in increasing cost
-		Set<Edge> edges = graph.edgeSet();
-		List<Edge> edgeList = new ArrayList<Edge>(edges);
-		Collections.sort(edgeList, new Comparator<Edge>() {
+		Set<Distance> distances = graph.edgeSet();
+		List<Distance> edgeList = new ArrayList<Distance>(distances);
+		Collections.sort(edgeList, new Comparator<Distance>() {
 			@Override
-			public int compare(Edge o1, Edge o2) {
-				if(o1.getEdgeCost() < o2.getEdgeCost()) {
+			public int compare(Distance o1, Distance o2) {
+				if(o1.getDistance() < o2.getDistance()) {
 					return -1;
-				} else if(o1.getEdgeCost() > o2.getEdgeCost()) {
+				} else if(o1.getDistance() > o2.getDistance()) {
 					return 1;
 				} else {
 					return 0;
@@ -41,21 +40,46 @@ public class Question1 {
 			}
 		});
 
-		Set<Edge> T = new HashSet<Edge>();
-		UnionFind<Integer> unionFind = new UnionFind<Integer>(graph.vertexSet());
-
-		for (Edge edge : edgeList) {
-			Integer source = graph.getEdgeSource(edge);
-			Integer target = graph.getEdgeTarget(edge);
+		// compute max-spaced 4-clustering
+		ClusteringUnionFind<Point> unionFind = new ClusteringUnionFind<Point>(graph.vertexSet());
+		for (Distance distance : edgeList) {
+			Point source = graph.getEdgeSource(distance);
+			Point target = graph.getEdgeTarget(distance);
 			if (!unionFind.find(source).equals(unionFind.find(target))) {
-				T.add(edge);
+				int numberOfClusters = unionFind.numberOfClusters();
+				if(numberOfClusters <= 4) {
+					break;
+				}
 				unionFind.union(source, target);
 			}
-		}
-		for (Edge edge : T) {
-			System.out.println(edge);
+
 		}
 
+		// get maximum spacing
+		List<Integer> crossingDistanceInts = new ArrayList<Integer>();
+		for (Point pointA : graph.vertexSet()) {
+			for (Point pointB : graph.vertexSet()) {
+				if(!unionFind.find(pointA).equals(unionFind.find(pointB))) {
+					Distance distance = graph.getEdge(pointA, pointB);
+					if(distance != null) {
+						crossingDistanceInts.add(distance.getDistance());
+					}
+				}
+
+			}
+		}
+
+		// answer to question
+		log.info("Collections.min(crossingDistanceInts) == {}", Collections.min(crossingDistanceInts));
+
+		// log all clusters
+		Set<Point> clusters = unionFind.getClusters();
+		for (Point cluster : clusters) {
+			List<Point> nodesForCluster = unionFind.getNodesForCluster(cluster);
+			log.info("In cluster {}, nodes = {}", cluster, StringUtils.join(nodesForCluster, ","));
+		}
+
+		// current solution [main] INFO ch.wurmlo.week2.Question1 - Collections.min(crossingDistanceInts) == 106
 	}
 
 }
