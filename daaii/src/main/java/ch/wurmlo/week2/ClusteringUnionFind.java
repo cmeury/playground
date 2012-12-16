@@ -13,7 +13,7 @@ public class ClusteringUnionFind<T> extends UnionFind<T> {
 	/**
 	 * Creates a UnionFind instance with all of the elements of elements in seperate sets.
 	 */
-	public ClusteringUnionFind(Set elements) {
+	public ClusteringUnionFind(Set<T> elements) {
 		super(elements);
 	}
 

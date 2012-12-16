@@ -8,7 +8,6 @@ import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.SimpleGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ch.wurmlo.week1.mst.Edge;
 
 public class DistancesReader {
 
