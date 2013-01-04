@@ -11,9 +11,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public class LongPoint {
 
-	int number;
+	long number;
 
-	public LongPoint(int number) {
+	public LongPoint(long number) {
 		this.number = number;
 	}
 

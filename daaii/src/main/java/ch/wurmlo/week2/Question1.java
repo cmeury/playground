@@ -52,7 +52,6 @@ public class Question1 {
 				}
 				unionFind.union(source, target);
 			}
-
 		}
 
 		// get maximum spacing
