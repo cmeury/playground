@@ -44,7 +44,7 @@ public class HammingReader {
 		}
 	}
 
-	public UndirectedGraph<Point, Distance> getGraph() {
+	public UndirectedGraph<LongPoint, Distance> getGraph() {
 		return g;
 	}
 }
