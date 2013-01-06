@@ -23,7 +23,7 @@ public class Question2 {
 			System.err.println("Could not read file");
 			System.exit(1);
 		}
-		UndirectedGraph<Point,Distance> graph = reader.getGraph();
+		UndirectedGraph<LongPoint,Distance> graph = reader.getGraph();
 
 		// sort edges in increasing cost
 //		Set<Distance> distances = graph.edgeSet();
