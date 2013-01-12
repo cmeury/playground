@@ -1,6 +1,3 @@
-/**
- * Copyright 2012, netbreeze GmbH
- */
 package ch.wurmlo.week4;
 
 import org.slf4j.Logger;

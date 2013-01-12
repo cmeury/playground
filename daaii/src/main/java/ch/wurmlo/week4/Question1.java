@@ -5,25 +5,26 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Question1 {
 
     @SuppressWarnings("unused")
     private static Logger log = LoggerFactory.getLogger(Question1.class);
 
     public static void main(String[] args) {
-        DefaultDirectedGraph<Integer,Edge> g1;
-        DefaultDirectedGraph<Integer,Edge> g2;
-        DefaultDirectedGraph<Integer,Edge> g3;
+        List<String> fileNames = Arrays.asList("g1.txt", "g2.txt", "g3.txt");
         try {
-            g1 = GraphFileReader.read("g1.txt");
-            g2 = GraphFileReader.read("g2.txt");
-            g3 = GraphFileReader.read("g3.txt");
+            for (String fileName : fileNames) {
+                DefaultDirectedGraph<Integer, Edge> graph = GraphFileReader.read(fileName);
+                FloydWarshall fw = new FloydWarshall(graph);
+                log.info("{} - shortest path={}, negative cycles={}", fileName, fw.getShortestPath(), fw.hasNegativeCycles());
+            }
         } catch (GraphFileException e) {
             log.error("Could not read file: {}", e.getMessage());
             System.exit(1);
         }
-
-
     }
 
 }
