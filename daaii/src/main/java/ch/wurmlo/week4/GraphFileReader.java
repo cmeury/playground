@@ -3,9 +3,7 @@ package ch.wurmlo.week4;
 import ch.wurmlo.week1.mst.Edge;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jgrapht.UndirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.SimpleGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +14,11 @@ public class GraphFileReader {
 
 	private static final Logger log = LoggerFactory.getLogger(GraphFileReader.class);
 
-	public static DefaultDirectedGraph<Integer, Edge> read(String fileName) throws GraphFileException {
+	@SuppressWarnings("unchecked")
+    public static DefaultDirectedGraph<Integer, Edge> read(String fileName) throws GraphFileException {
 
-        @SuppressWarnings("unchecked")
-        List<String> list = null;
+        List<String> list;
+
         try {
             list = IOUtils.readLines(GraphFileReader.class.getResourceAsStream(fileName));
         } catch (IOException e) {
