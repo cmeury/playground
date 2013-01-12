@@ -16,8 +16,10 @@ public class FloydWarshall {
     private static Logger log = LoggerFactory.getLogger(FloydWarshall.class);
 
     private long shortestPath;
-    private final long[][][] A;
+    private final long[][] A;
     private final DefaultDirectedGraph<Integer, Edge> graph;
+
+    private static final long MAX = 999999999;
 
     public FloydWarshall(DefaultDirectedGraph<Integer, Edge> graph) {
 
@@ -25,34 +27,37 @@ public class FloydWarshall {
 
         Set<Integer> vertices = graph.vertexSet();
         int n = vertices.size();
-        this.A = new long[n][n][n];
+        this.A = new long[n][n];
 
         // base cases
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
                 if(i == j) {
-                    A[i][j][0] = 0;
-                } else if(graph.containsEdge(i, j)) {
-                    A[i][j][0] = graph.getEdge(i, j).getEdgeCost();
+                    A[i][j] = 0;
+                } else if(graph.containsEdge(i+1, j+1)) {
+                    A[i][j] = graph.getEdge(i+1, j+1).getEdgeCost();
                 } else {
-                    A[i][j][0] = Long.MAX_VALUE;
+                    A[i][j] = MAX;
                 }
             }
         }
 
-        shortestPath = Long.MAX_VALUE;
-
         // dynamic programming loop
-        for(int k = 0; k < n; k++) {
+        shortestPath = MAX;
+        for(int k = 1; k < n; k++) {
             for(int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    A[i][j][k] = Math.min(A[i][j][k-1], A[i][k][k=1] + A[k][j][k-1]);
-                    if(A[i][j][k] < shortestPath) {
-                        shortestPath = A[i][j][k];
+                    long case1 = A[i][j];
+                    long case2 = A[i][k] + A[k][j];
+                    long newVal = Math.min(case1, case2);
+                    A[i][j] = newVal;
+                    if(newVal < shortestPath) {
+                        shortestPath = newVal;
                     }
                 }
             }
         }
+
     }
 
     public long getShortestPath() {
@@ -67,7 +72,7 @@ public class FloydWarshall {
         Set<Integer> vertices = graph.vertexSet();
         int n = vertices.size();
         for (int i = 0; i < n; i++) {
-            if(A[i][i][n] < 0) {
+            if(A[i][i] < 0) {
                 return true;
             }
         }

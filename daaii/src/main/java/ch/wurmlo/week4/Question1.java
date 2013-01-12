@@ -1,7 +1,5 @@
 package ch.wurmlo.week4;
 
-import ch.wurmlo.week1.mst.Edge;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,10 +13,10 @@ public class Question1 {
 
     public static void main(String[] args) {
         List<String> fileNames = Arrays.asList("g1.txt", "g2.txt", "g3.txt");
+//        List<String> fileNames = Arrays.asList("small1.txt", "small2.txt");
         try {
             for (String fileName : fileNames) {
-                DefaultDirectedGraph<Integer, Edge> graph = GraphFileReader.read(fileName);
-                FloydWarshall fw = new FloydWarshall(graph);
+                FloydWarshall fw = new FloydWarshall(GraphFileReader.read(fileName));
                 log.info("{} - shortest path={}, negative cycles={}", fileName, fw.getShortestPath(), fw.hasNegativeCycles());
             }
         } catch (GraphFileException e) {
