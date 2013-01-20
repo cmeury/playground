@@ -31,6 +31,7 @@ public class TspReader {
             log.error("mismatch: number of cities specifeid in header ({}) does not match actual amount ({})", numberOfCities, cities.size());
             throw new IOException();
         }
+        this.cities = cities;
 	}
 
     public List<City> getCities() {
