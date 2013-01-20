@@ -1,0 +1,7 @@
+<ui>
+    <popup name="tray_menu">
+        <menuitem name="Start Pomodoro" action="start"/>
+        <menuitem name="Cancel Pomodoro" action="cancel"/>
+        <menuitem name="Quit" action="quit"/>
+    </popup>
+</ui>

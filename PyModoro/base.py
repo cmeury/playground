@@ -24,7 +24,7 @@ class Base:
 
     is_started = False
     time_started = time.time()
-    POMODORO_LENGTH_SECS = 24 * 60
+    POMODORO_LENGTH_SECS = (24 * 60)
 
     def time_left(self):
         now = time.time()
@@ -33,9 +33,15 @@ class Base:
 
     def time_left_string(self):
         left = self.time_left()
-        minutes = left / 60
-        seconds = left % 60
-        return str.format("{0:d}:{1:d}", int(round(minutes)), int(round(seconds)))
+        minutes = int(round(left / 60))
+        seconds = int(round(left % 60))
+        # prevent display of 24:60 right after start. this introduces
+        # the defective behaviour of 24:59 being shown for 2 seconds
+        # bearable for the moment, needs to be solved waaayyy differently
+        if seconds == 60:
+            minutes += 1
+            seconds = 0
+        return str.format("{0:02d}:{1:02d}", minutes, seconds)
 
     def quitting(self, widget, event, data=None):
         print "Quitting!"
@@ -59,8 +65,9 @@ class Base:
         return False
 
     def destroy(self, widget, data=None):
-        gobject.source_remove(self.timer)
-        self.timer = 0
+        if self.is_started:
+            gobject.source_remove(self.timer)
+            self.timer = 0
         gtk.main_quit()
 
     def create_main_window(self):
@@ -86,7 +93,43 @@ class Base:
     def create_progress_bar(self):
         self.progress_bar = gtk.ProgressBar(adjustment=None)
         self.progress_bar.set_orientation(gtk.PROGRESS_LEFT_TO_RIGHT)
+        self.progress_bar.set_text("25:00")
+        self.progress_bar.set_fraction(1)
         self.progress_bar.show()
+
+    def create_status_icon(self):
+        # Icon from http://www.iconarchive.com/show/artcore-4-icons-by-artcore-illustrations.html
+        # License: CC Attribution-Noncommercial-No Derivate 3.0
+        # Homepage: http://blog.artcore-illustrations.de/aicons/
+        self.status_icon = gtk.status_icon_new_from_file("fraise-icon.png")
+        self.status_icon.set_has_tooltip(True)
+        self.status_icon.set_tooltip_text("PyModoro " + VERSION)
+        self.status_icon.connect("popup-menu", self.popup, None)
+        self.status_icon.set_visible(True)
+
+    def popup(self, icon, button, activate_time, data=None):
+#        self.uimanager.get_widget('/tray_menu').show()
+        self.tray_menu.popup(None, None, None, button, activate_time)
+        print "Popup!"
+
+    def create_tray_menu(self):
+#        actiongroup = gtk.ActionGroup("tray_menu")
+#        self.uimanager = gtk.UIManager()
+#        self.uimanager.insert_action_group(actiongroup, 0)
+#        merge_id = self.uimanager.add_ui_from_file("tray_menu.xml")
+#        tray_menu = self.uimanager.get_widget('/tray_menu')
+#        tray_menu.popup()
+        self.tray_menu = gtk.Menu()
+        self.menu_start = gtk.MenuItem("Start Pomodoro")
+        self.menu_cancel = gtk.MenuItem("Cancel Pomodoro")
+        self.menu_quit = gtk.MenuItem("Quit")
+        self.tray_menu.append(self.menu_start)
+        self.tray_menu.append(self.menu_cancel)
+        self.tray_menu.append(self.menu_quit)
+        self.menu_start.connect("activate", self.start_pomodoro, None)
+        self.menu_cancel.connect("activate", self.quitting, None)
+        self.menu_quit.connect("activate", self.quitting, None)
+
 
     def __init__(self):
         self.create_main_window()
@@ -103,6 +146,9 @@ class Base:
         self.box1.show()
 
         self.window.show()
+
+        self.create_status_icon()
+        self.create_tray_menu()
 
     def main(self):
         gtk.main()
