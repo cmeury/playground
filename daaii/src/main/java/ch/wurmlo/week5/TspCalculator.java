@@ -20,36 +20,43 @@ public class TspCalculator {
 
     @SuppressWarnings("unchecked")
     public static double calculateTsp(List<City> cities) {
+
         log.info("generating subsets for {} cities", cities.size());
-        List<City>[] allSubsets = generateSubsets(cities);
+        List<Integer> cityIndices = new ArrayList<Integer>();
+        for (City city : cities) {
+            cityIndices.add(cities.indexOf(city));
+        }
+        List<Integer>[] allSubsets = generateSubsets(cityIndices);
         log.info("{} subsets generated", allSubsets.length);
+
         double A[][] = new double[allSubsets.length][allSubsets.length];
 
+        // base cases
         for (int i = 0; i < allSubsets.length; i++) {
             A[i][0] = i == 0 ? 0 : Double.MAX_VALUE;
         }
 
+        // main dynamic programming loop
         for (int m = 2; m < cities.size() +1; m++) {
             log.info("collection minimums for problem size m={}", m);
             List<Integer> indicesOfSubsets = getIndicesOfSubsets(allSubsets, m);
             for (Integer sIndex : indicesOfSubsets) {
-                List<City> subset = allSubsets[sIndex]; // subset <=> S
-                for (City jCity : subset) {     // city <=>j
-                    if (jCity.getCardinal() == 1) {
+                List<Integer> subset = allSubsets[sIndex]; // subset <=> S
+                for (int j : subset) {
+                    if (j == 0) {
                         continue;
                     }
 
-                    int j = jCity.getCardinal() - 1;
-                    List<City> jRemoved = (List<City>) CollectionUtils.select(subset, PredicateUtils.notPredicate(PredicateUtils.equalPredicate(jCity)));
+                    // {S} - j
+                    List<City> jRemoved = (List<City>) CollectionUtils.select(subset, PredicateUtils.notPredicate(PredicateUtils.equalPredicate(j)));
                     int tmpIndex = ArrayUtils.indexOf(allSubsets, jRemoved);
 
                     List<Double> values = new ArrayList<Double>();
-                    for (City kCity : subset) {
-                        if (kCity.equals(jCity)) {
+                    for (int k : subset) {
+                        if (k == j) {
                             continue;
                         }
-                        int k = kCity.getCardinal() - 1;
-                        values.add(A[tmpIndex][k] + jCity.distance(kCity));
+                        values.add(A[tmpIndex][k] + cities.get(j).distance(cities.get(k)));
                     }
                     Double min = Collections.min(values);
                     A[sIndex][j] = min;
@@ -58,17 +65,18 @@ public class TspCalculator {
 
         }
 
+        // get the right answer
         log.info("brute force search");
         List<Double> values = new ArrayList<Double>();
         for (int j = 1; j < cities.size(); j++) {
             values.add(A[allSubsets.length-1][j] + cities.get(j).distance(cities.get(0)));
         }
-
         double minimumCost = Collections.min(values);
+
         return ((Double) (Math.floor(minimumCost))).intValue();
     }
 
-    private static List<Integer> getIndicesOfSubsets(List<City>[] subsets, int size) {
+    private static List<Integer> getIndicesOfSubsets(List<Integer>[] subsets, int size) {
         List<Integer> indices = new ArrayList<Integer>();
         for (int i = 0; i < subsets.length; i++) {
             if(subsets[i].size() == size) {
@@ -109,10 +117,10 @@ public class TspCalculator {
     }
 
     @SuppressWarnings("unchecked")
-    private static List<City>[] generateSubsets(List<City> cities) {
-        List<List<City>> powerset = powerset(cities.subList(1, cities.size()));
-        for (List<City> cityList : powerset) {
-            cityList.add(cities.get(0));
+    private static List<Integer>[] generateSubsets(List<Integer> cities) {
+        List<List<Integer>> powerset = powerset(cities.subList(1, cities.size()));
+        for (List<Integer> cityList : powerset) {
+            cityList.add(0);
             Collections.sort(cityList);
         }
         return powerset.toArray(new List[powerset.size()]);

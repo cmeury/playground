@@ -13,7 +13,7 @@ public class Question1 {
 	@SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
-        String fileName = "tsp.txt";
+        String fileName = "tsp_simple.txt";
         TspReader reader = null;
         try {
             reader = new TspReader(fileName);
