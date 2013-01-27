@@ -22,9 +22,12 @@ public class Question1 {
 			System.exit(1);
 		}
 
+        long startTime = System.currentTimeMillis();
         double min = TspCalculator.calculateTsp(reader.getCities());
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
 
-        log.info("minium cost for file '{}' = {}", fileName, min);
+        log.info("minium cost for file '{}' = {} (took {} seconds)", fileName, min, duration / 1000);
     }
 
 }

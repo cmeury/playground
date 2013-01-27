@@ -19,7 +19,7 @@ public class TspReader {
     public TspReader(String fileName) throws IOException {
         List<String> list = IOUtils.readLines(TspReader.class.getResourceAsStream(fileName));
         int numberOfCities = Integer.valueOf(list.get(0));
-        List<City> cities = new ArrayList<City>(numberOfCities);
+        List<City> cities = new ArrayList<>(numberOfCities);
         int cardinal = 1;
         for (String s : list.subList(1, list.size())) {
             String[] split = StringUtils.split(s, " ");

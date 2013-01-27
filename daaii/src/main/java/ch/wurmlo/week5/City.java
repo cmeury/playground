@@ -20,10 +20,6 @@ public class City implements Comparable<City> {
         return y;
     }
 
-    public int getCardinal() {
-        return cardinal;
-    }
-
     public double distance(City otherCity) {
         double z = otherCity.getX();
         double w = otherCity.getY();
