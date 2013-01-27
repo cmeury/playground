@@ -20,7 +20,7 @@ public class TspCalculatorTest {
         list.add(4);
 
         // when
-        List<BitSet> bitsets = TspCalculator.powersetBitCount(list);
+        List<BitSet> bitsets = TspCalculator.powerset(list);
 
         // then
         assertEquals(8, bitsets.size());

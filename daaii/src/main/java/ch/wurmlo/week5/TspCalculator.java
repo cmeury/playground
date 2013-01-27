@@ -94,7 +94,7 @@ public class TspCalculator {
 
     @SuppressWarnings("unchecked")
     private static BitSet[] generateSubsets(List<Integer> cities) {
-        List<BitSet> powerset = powersetBitCount(cities.subList(1, cities.size()));
+        List<BitSet> powerset = powerset(cities.subList(1, cities.size()));
         for (BitSet cityList : powerset) {
             cityList.set(0);
         }
@@ -107,7 +107,7 @@ public class TspCalculator {
      * @param list original set
      * @return list of all combinatoric, unique subsets
      */
-    public static List<BitSet> powersetBitCount(List<Integer> list) {
+    public static List<BitSet> powerset(List<Integer> list) {
         List<BitSet> ps = new ArrayList<>();
         ps.add(new BitSet());   // add the empty set
 
