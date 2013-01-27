@@ -1,6 +1,5 @@
 package ch.wurmlo.week5;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,29 +29,25 @@ public class TspCalculator {
         });
         log.info("{} subsets generated", allSubsets.length);
 
-        log.info("allocating memory for array");
-//        float A[][] = new float[allSubsets.length][cities.size()];
         Map<BitSet, Float[]> map = new HashMap<>();
-
-        log.info("setting base cases");
 
         BitSet firstCity = new BitSet();
         firstCity.set(0);
 
-        for (int i = 0; i < allSubsets.length; i++) {
+        for (BitSet allSubset : allSubsets) {
 
             // we only calculate base-cases for m=0 and m=1
-            if(allSubsets[i].cardinality() > 2) {
+            if (allSubset.cardinality() > 2) {
                 break;
             }
 
             Float[] floats = new Float[cities.size()];
-            if(allSubsets[i].equals(firstCity)) {
+            if (allSubset.equals(firstCity)) {
                 floats[0] = 0f;
             } else {
                 floats[0] = Float.MAX_VALUE;
             }
-            map.put(allSubsets[i], floats);
+            map.put(allSubset, floats);
         }
 
 
@@ -71,20 +66,17 @@ public class TspCalculator {
             }
 
             // allocate space for new subproblems
-            for (int i = 0; i < subproblems.size(); i++) {
+            for (BitSet subproblem : subproblems) {
                 Float[] floats = new Float[cities.size()];
-                if(subproblems.get(i).equals(firstCity)) {
+                if (subproblem.equals(firstCity)) {
                     floats[0] = 0f;
                 } else {
                     floats[0] = Float.MAX_VALUE;
                 }
-                map.put(subproblems.get(i), floats);
+                map.put(subproblem, floats);
             }
 
-
             for (BitSet subProblem : subproblems) {
-//                int subProblemIndex = ArrayUtils.indexOf(allSubsets, subProblem);
-
                 for (int j = subProblem.nextSetBit(0); j >= 0; j = subProblem.nextSetBit(j+1)) {   // here
                     if (j == 0) {
                         continue;
@@ -92,18 +84,15 @@ public class TspCalculator {
 
                     BitSet sMinusJ = (BitSet) subProblem.clone();
                     sMinusJ.clear(j);
-//                    int tmpIndex = ArrayUtils.indexOf(allSubsets, sMinusJ); // here
 
                     List<Float> values = new ArrayList<>();
                     for (int k = subProblem.nextSetBit(0); k >= 0; k = subProblem.nextSetBit(k+1)) {
                         if (k == j) {
                             continue;
                         }
-//                        float val = A[tmpIndex][k];
                         float val = map.get(sMinusJ)[k];
                         values.add(val + cities.get(j).distance(cities.get(k)));
                     }
-//                    A[subProblemIndex][j] = Collections.min(values);
                     map.get(subProblem)[j] = Collections.min(values);
 
                 }
