@@ -1,12 +1,15 @@
 package ch.wurmlo.week5;
 
-public class City {
+public class City implements Comparable<City> {
 
-    double x, y;
+    private final double x;
+    private final double y;
+    private final int cardinal;
 
-    public City(double x, double y) {
+    public City(double x, double y, int cardinal) {
         this.x = x;
         this.y = y;
+        this.cardinal = cardinal;
     }
 
     public double getX() {
@@ -17,6 +20,10 @@ public class City {
         return y;
     }
 
+    public int getCardinal() {
+        return cardinal;
+    }
+
     public double distance(City otherCity) {
         double z = otherCity.getX();
         double w = otherCity.getY();
@@ -25,7 +32,7 @@ public class City {
 
     @Override
     public String toString() {
-        return "City[x=" + this.x + ",y=" + this.y + "]";
+        return "City # " + this.cardinal + " [x=" + this.x + ",y=" + this.y + "]";
     }
 
     @Override
@@ -50,5 +57,10 @@ public class City {
         temp = y != +0.0d ? Double.doubleToLongBits(y) : 0L;
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public int compareTo(City o) {
+        return cardinal - o.cardinal;
     }
 }

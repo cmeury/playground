@@ -20,11 +20,12 @@ public class TspReader {
         List<String> list = IOUtils.readLines(TspReader.class.getResourceAsStream(fileName));
         int numberOfCities = Integer.valueOf(list.get(0));
         List<City> cities = new ArrayList<City>(numberOfCities);
+        int cardinal = 1;
         for (String s : list.subList(1, list.size())) {
             String[] split = StringUtils.split(s, " ");
             double x = Double.valueOf(split[0]);
             double y = Double.valueOf(split[1]);
-            cities.add(new City(x, y));
+            cities.add(new City(x, y, cardinal++));
             log.debug("adding city with x={} and y={}", x, y);
         }
         if(cities.size() != numberOfCities) {
