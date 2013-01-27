@@ -4,10 +4,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Calculates minimum cost for the travelling salesman problem by dynamic programming.
@@ -25,49 +22,107 @@ public class TspCalculator {
             cityIndices.add(cities.indexOf(city));
         }
         BitSet[] allSubsets = generateSubsets(cityIndices);
+        Arrays.sort(allSubsets, new Comparator<BitSet>() {
+            @Override
+            public int compare(BitSet o1, BitSet o2) {
+                return o1.cardinality() - o2.cardinality();
+            }
+        });
         log.info("{} subsets generated", allSubsets.length);
 
-        double A[][] = new double[allSubsets.length][allSubsets.length];
+        log.info("allocating memory for array");
+//        float A[][] = new float[allSubsets.length][cities.size()];
+        Map<BitSet, Float[]> map = new HashMap<>();
 
-        // base cases
+        log.info("setting base cases");
+
+        BitSet firstCity = new BitSet();
+        firstCity.set(0);
+
         for (int i = 0; i < allSubsets.length; i++) {
-            A[i][0] = i == 0 ? 0 : Double.MAX_VALUE;
+
+            // we only calculate base-cases for m=0 and m=1
+            if(allSubsets[i].cardinality() > 2) {
+                break;
+            }
+
+            Float[] floats = new Float[cities.size()];
+            if(allSubsets[i].equals(firstCity)) {
+                floats[0] = 0f;
+            } else {
+                floats[0] = Float.MAX_VALUE;
+            }
+            map.put(allSubsets[i], floats);
         }
 
-        // main dynamic programming loop
-        for (int m = 2; m < cities.size() +1; m++) {
-            log.info("collection minimums for problem size m={}", m);
-            List<BitSet> subproblems = getBitSetsOfSize(allSubsets, m);
-            for (BitSet subProblem : subproblems) {
-                int subProblemIndex = ArrayUtils.indexOf(allSubsets, subProblem);
 
-                for (int j = subProblem.nextSetBit(0); j >= 0; j = subProblem.nextSetBit(j+1)) {
+        log.info("entering main dynamic programming loop");
+        long startTime = System.currentTimeMillis();
+        for (int m = 2; m < cities.size() +1; m++) {
+            long mStartTime = System.currentTimeMillis();
+            List<BitSet> subproblems = getBitSetsOfSize(allSubsets, m);
+
+            // remove all bitsets from the dp map that are no longer needed
+            if(m > 2) {
+                List<BitSet> setsToDelete = getBitSetsOfSize(allSubsets, m-2);
+                for (BitSet bitSet : setsToDelete) {
+                    map.remove(bitSet);
+                }
+            }
+
+            // allocate space for new subproblems
+            for (int i = 0; i < subproblems.size(); i++) {
+                Float[] floats = new Float[cities.size()];
+                if(subproblems.get(i).equals(firstCity)) {
+                    floats[0] = 0f;
+                } else {
+                    floats[0] = Float.MAX_VALUE;
+                }
+                map.put(subproblems.get(i), floats);
+            }
+
+
+            for (BitSet subProblem : subproblems) {
+//                int subProblemIndex = ArrayUtils.indexOf(allSubsets, subProblem);
+
+                for (int j = subProblem.nextSetBit(0); j >= 0; j = subProblem.nextSetBit(j+1)) {   // here
                     if (j == 0) {
                         continue;
                     }
 
                     BitSet sMinusJ = (BitSet) subProblem.clone();
                     sMinusJ.clear(j);
-                    int tmpIndex = ArrayUtils.indexOf(allSubsets, sMinusJ);
+//                    int tmpIndex = ArrayUtils.indexOf(allSubsets, sMinusJ); // here
 
-                    List<Double> values = new ArrayList<>();
+                    List<Float> values = new ArrayList<>();
                     for (int k = subProblem.nextSetBit(0); k >= 0; k = subProblem.nextSetBit(k+1)) {
                         if (k == j) {
                             continue;
                         }
-                        values.add(A[tmpIndex][k] + cities.get(j).distance(cities.get(k)));
+//                        float val = A[tmpIndex][k];
+                        float val = map.get(sMinusJ)[k];
+                        values.add(val + cities.get(j).distance(cities.get(k)));
                     }
-                    A[subProblemIndex][j] = Collections.min(values);
+//                    A[subProblemIndex][j] = Collections.min(values);
+                    map.get(subProblem)[j] = Collections.min(values);
+
                 }
             }
+
+            long curTime = System.currentTimeMillis();
+            long mDuration = curTime - mStartTime;
+            long tDuration = curTime - startTime;
+            log.info("m = {} took {} seconds (total {})", m, mDuration / 1000, tDuration / 1000);
 
         }
 
         // get the right answer
         log.info("brute force search");
-        List<Double> values = new ArrayList<>();
+        List<Float> values = new ArrayList<>();
+        BitSet allCities = new BitSet();
+        allCities.set(0, cities.size());
         for (int j = 1; j < cities.size(); j++) {
-            values.add(A[allSubsets.length-1][j] + cities.get(j).distance(cities.get(0)));
+            values.add(map.get(allCities)[j] + cities.get(j).distance(cities.get(0)));
         }
         double minimumCost = Collections.min(values);
 
@@ -77,19 +132,11 @@ public class TspCalculator {
     private static List<BitSet> getBitSetsOfSize(BitSet[] allSubsets, int m) {
         List<BitSet> bitSets = new ArrayList<>();
         for (BitSet bitSet : allSubsets) {
-            if(countSetBits(bitSet) == m) {
+            if(bitSet.cardinality() == m) {
                 bitSets.add(bitSet);
             }
         }
         return bitSets;
-    }
-
-    private static int countSetBits(BitSet bitSet) {
-        int count = 0;
-        for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i+1)) {
-            count++;
-        }
-        return count;
     }
 
     @SuppressWarnings("unchecked")

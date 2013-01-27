@@ -13,12 +13,12 @@ public class Question1 {
 	@SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
-        String fileName = "tsp_simple.txt";
+        String fileName = "tsp.txt";
         TspReader reader = null;
         try {
             reader = new TspReader(fileName);
 		} catch (IOException e) {
-			System.err.println("Could not read file");
+			log.error("Could not read file {}", fileName, e);
 			System.exit(1);
 		}
 

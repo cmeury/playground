@@ -2,28 +2,28 @@ package ch.wurmlo.week5;
 
 public class City implements Comparable<City> {
 
-    private final double x;
-    private final double y;
+    private final float x;
+    private final float y;
     private final int cardinal;
 
-    public City(double x, double y, int cardinal) {
+    public City(float x, float y, int cardinal) {
         this.x = x;
         this.y = y;
         this.cardinal = cardinal;
     }
 
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public double distance(City otherCity) {
-        double z = otherCity.getX();
-        double w = otherCity.getY();
-        return Math.sqrt(Math.pow(x - z, 2) + Math.pow(y - w, 2));
+    public float distance(City otherCity) {
+        float z = otherCity.getX();
+        float w = otherCity.getY();
+        return (float) Math.sqrt(Math.pow(x - z, 2) + Math.pow(y - w, 2));
     }
 
     @Override
