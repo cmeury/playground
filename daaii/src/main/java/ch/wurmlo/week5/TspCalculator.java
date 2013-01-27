@@ -17,7 +17,7 @@ public class TspCalculator {
     private static Logger log = LoggerFactory.getLogger(TspCalculator.class);
 
     @SuppressWarnings("unchecked")
-    public static double calculateTsp(List<City> cities) {
+    public static int calculateTsp(List<City> cities) {
 
         log.info("generating subsets for {} cities", cities.size());
         List<Integer> cityIndices = new ArrayList<>();

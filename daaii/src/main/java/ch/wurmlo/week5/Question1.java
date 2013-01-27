@@ -23,7 +23,7 @@ public class Question1 {
 		}
 
         long startTime = System.currentTimeMillis();
-        double min = TspCalculator.calculateTsp(reader.getCities());
+        int min = TspCalculator.calculateTsp(reader.getCities());
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
 
