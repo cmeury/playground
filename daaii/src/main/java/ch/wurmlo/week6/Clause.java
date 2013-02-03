@@ -5,19 +5,19 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Clause {
 
-    private final float first;
-    private final float second;
+    private final int first;
+    private final int second;
 
-    public Clause(float first, float second) {
+    public Clause(int first, int second) {
         this.first = first;
         this.second = second;
     }
 
-    public float getFirst() {
+    public int getFirst() {
         return first;
     }
 
-    public float getSecond() {
+    public int getSecond() {
         return second;
     }
 

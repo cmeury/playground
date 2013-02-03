@@ -13,10 +13,6 @@ public class rVertex implements Comparable {
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public Boolean isExplored() {
 		return explored;
 	}

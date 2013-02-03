@@ -21,12 +21,17 @@ public class DirectedGraph {
 		}
 	}
 
-	public List<rVertex> getConnectedVertices(rVertex vertex) {
-		return graph.get(vertex);
+    public void connectVertex(rVertex vertex, rVertex connectedVertex) {
+		List<rVertex> vertices = graph.get(vertex);
+		if(vertices == null) {
+            graph.put(vertex, Lists.newArrayList(connectedVertex));
+        } else {
+			vertices.add(connectedVertex);
+		}
 	}
 
-	public int currentTailsCount() {
-		return this.graph.keySet().size();
+	public List<rVertex> getConnectedVertices(rVertex vertex) {
+		return graph.get(vertex);
 	}
 
 	@Override
@@ -77,7 +82,6 @@ public class DirectedGraph {
 		return newGraph;
 	}
 
-
 	public Iterator<rVertex> getTailsIterator() {
 		return this.graph.keySet().iterator();
 	}
@@ -92,4 +96,5 @@ public class DirectedGraph {
 			rV.setExplored(false);
 		}
 	}
+
 }

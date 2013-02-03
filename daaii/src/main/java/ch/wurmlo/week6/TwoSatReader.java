@@ -28,8 +28,8 @@ public class TwoSatReader {
         List<Clause> clauses = new ArrayList<>(numOfClausesAndVars);
         for (String s : list.subList(1, list.size())) {
             String[] split = StringUtils.split(s, " ");
-            float first = Float.valueOf(split[0]);
-            float second = Float.valueOf(split[1]);
+            int first = Integer.valueOf(split[0]);
+            int second = Integer.valueOf(split[1]);
             clauses.add(new Clause(first, second));
             log.debug("adding clause with first={} and second={}", first, second);
         }
