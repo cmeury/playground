@@ -35,7 +35,7 @@ public class TspReader {
             log.debug("adding city with x={} and y={}", x, y);
         }
         if(cities.size() != numberOfCities) {
-            log.error("mismatch: number of cities specifeid in header ({}) does not match actual amount ({})", numberOfCities, cities.size());
+            log.error("mismatch: number of cities specified in header ({}) does not match actual amount ({})", numberOfCities, cities.size());
             throw new IOException();
         }
         this.cities = cities;
