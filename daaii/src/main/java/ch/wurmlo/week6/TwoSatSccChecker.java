@@ -1,6 +1,3 @@
-/**
- * Copyright 2013, netbreeze GmbH
- */
 package ch.wurmlo.week6;
 
 import com.google.common.collect.Maps;
