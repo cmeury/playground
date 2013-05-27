@@ -18,3 +18,4 @@ scala-koans.iws
 .idea
 sbtboot
 ivyrepo
+tests
